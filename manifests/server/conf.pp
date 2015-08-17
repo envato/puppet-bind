@@ -107,7 +107,10 @@ define bind::server::conf (
   $zones                  = {},
   $includes               = [],
   $views                  = {},
+  $packagenameprefix      = $::bind::params::packagenameprefix,
 ) {
+
+  include ::bind
 
   # If recursion is enabled
   if $recursion == 'yes' {
@@ -132,7 +135,7 @@ define bind::server::conf (
   file { $title:
     notify  => Class['bind::service'],
     content => template('bind/named.conf.erb'),
+    require => Package[$packagenameprefix],
   }
-
 }
 
